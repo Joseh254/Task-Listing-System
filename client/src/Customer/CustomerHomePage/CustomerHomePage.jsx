@@ -1,9 +1,11 @@
-import React from 'react'
-
+import React from "react";
+import CustomerNav from "../CustomerNav/CustomerNav";
 function CustomerHomePage() {
   return (
-    <div>CustomerHomePage</div>
-  )
+    <>
+      <CustomerNav />
+    </>
+  );
 }
 
-export default CustomerHomePage
+export default CustomerHomePage;

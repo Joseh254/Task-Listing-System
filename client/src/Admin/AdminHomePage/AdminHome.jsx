@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import AdminNav from "../AdminNav/AdminNav";
 
 function AdminHomePage() {
-  return (
-    <div>AdminHomePage</div>
-  )
+  return <AdminNav />;
 }
 
-export default AdminHomePage
+export default AdminHomePage;

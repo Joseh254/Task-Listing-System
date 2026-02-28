@@ -1,9 +1,11 @@
-import React from 'react'
-
+import React from "react";
+import FreelancerNav from "../FreelancerNav/FreelancerNav";
 function FreeLancerHomePage() {
   return (
-    <div>FreeLancerHomePage</div>
-  )
+    <div>
+      <FreelancerNav />
+    </div>
+  );
 }
 
-export default FreeLancerHomePage
+export default FreeLancerHomePage;
