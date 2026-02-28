@@ -1,3 +1,13 @@
+:root {
+  --color-primary: #FFD400;
+  --color-secondary: #FF8C00;
+  --color-dark:#FF5F00;
+  --color-light:#f3efd8;
+  --color-black:#222;
+  --color-white:#fff;
+  --color-success: #22C55E;
+  --color-danger: #EF4444;
+}
 /* Box sizing */
 *,
 *::before,
@@ -13,6 +23,7 @@
 
 /* Set core body defaults */
 body {
+   font-family: 'Poppins', sans-serif;
   max-width: 100%;
   min-height: 100vh;
   line-height: 1.5;

@@ -3,7 +3,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./ReusableNav.css";
 
-function ReusableNav({ links, logo = "MyApp" }) {
+function ReusableNav({ links = [], logo = "MyApp" }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -18,7 +18,10 @@ function ReusableNav({ links, logo = "MyApp" }) {
         <ul className="nav-links">
           {links.map((link, index) => (
             <li key={index}>
-              <Link to={link.path}>{link.label}</Link>
+              <Link to={link.path} className="nav-item">
+                {link.icon && <span className="nav-icon">{link.icon}</span>}
+                <span>{link.label}</span>
+              </Link>
             </li>
           ))}
         </ul>
@@ -33,7 +36,11 @@ function ReusableNav({ links, logo = "MyApp" }) {
       <ul className={`mobile-menu ${isOpen ? "active" : ""}`}>
         {links.map((link, index) => (
           <li key={index} onClick={toggleMenu}>
-            <Link to={link.path}>{link.label}</Link>
+            <Link to={link.path} className="nav-item">
+            <span>{link.label && link.label}</span>
+              {link.icon && <span className="nav-icon">{link.icon}</span>}
+              
+            </Link>
           </li>
         ))}
       </ul>

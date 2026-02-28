@@ -1,15 +1,21 @@
-import React from "react";
+
+import {  FaEnvelope, FaWallet } from "react-icons/fa";
 import ReusableNav from "../../ReusableComponents/ReusableNav/ReusableNav";
+
 function FreelancerNav() {
-  const adminLinks = [
-    { label: "Dashboard", path: "/admin/dashboard" },
-    { label: "Users", path: "/admin/users" },
-    { label: "Settings", path: "/admin/settings" },
+  const freelancerLinks = [
+    
+    { label: "Tasks", path: "/freelancer/tasks" },
+    { label: "Messages", path: "/freelancer/messages", icon: <FaEnvelope/> },
+    { label: "Earnings", path: "/freelancer/earnings", icon: <FaWallet />},
+    { label: "Profile", path: "/freelancer/profile" },
   ];
+
   return (
-    <>
-      <ReusableNav links={adminLinks} logo="Freelancer" />
-    </>
+    <ReusableNav 
+    logo="Freelancer"
+      links={freelancerLinks} 
+    />
   );
 }
 
