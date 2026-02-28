@@ -1,0 +1,177 @@
+.admin-dashboard-container {
+  padding: 2rem;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.admin-title {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: #111827;
+}
+
+/* Stats Grid */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.admin-stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-stat-card h4 {
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.admin-stat-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Sections */
+.admin-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.admin-section-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-section-card h3 {
+  margin-bottom: 1rem;
+}
+
+.admin-section-card ul {
+  list-style: none;
+}
+
+.admin-section-card li {
+  margin-bottom: 1rem;
+  color: #374151;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Buttons */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.approve {
+  background: #22c55e;
+  color: white;
+}
+
+.reject {
+  background: #ef4444;
+  color: white;
+}
+/* Status Badges */
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: white;
+}
+
+.in-progress {
+  background: #f59e0b;
+}
+
+.review {
+  background: #3b82f6;
+}
+
+.completed {
+  background: #22c55e;
+}
+
+/* Progress Bar */
+.progress-item {
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #22c55e;
+  border-radius: 10px;
+}
+
+/* Better grid for many sections */
+.admin-content-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-gap: 1.5rem;
+
+  /* Define grid areas */
+  grid-template-areas:
+    "requests requests performance performance"
+    "active active progress progress"
+    "topfreelancers topfreelancers overview overview";
+}
+.pending-requests {
+  grid-area: requests;
+}
+
+.freelancer-performance {
+  grid-area: performance;
+}
+
+.active-tasks {
+  grid-area: active;
+}
+
+.task-progress {
+  grid-area: progress;
+}
+
+.top-freelancers {
+  grid-area: topfreelancers;
+}
+
+.platform-overview {
+  grid-area: overview;
+}
+/* Responsive */
+@media (max-width: 900px) {
+  .admin-content-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "requests"
+      "performance"
+      "active"
+      "progress"
+      "topfreelancers"
+      "overview";
+  }
+}

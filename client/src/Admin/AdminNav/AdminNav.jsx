@@ -10,12 +10,7 @@ function AdminNav() {
     { label: "Logout", path: "/logout", icon: FaSignOutAlt },
   ];
 
-  return (
-    <ReusableNav 
-      links={adminLinks} 
-      logo="Admin Panel"
-    />
-  );
+  return <ReusableNav links={adminLinks} logo="Admin Panel" />;
 }
 
 export default AdminNav;

@@ -37,9 +37,8 @@ function ReusableNav({ links = [], logo = "MyApp" }) {
         {links.map((link, index) => (
           <li key={index} onClick={toggleMenu}>
             <Link to={link.path} className="nav-item">
-            <span>{link.label && link.label}</span>
+              <span>{link.label && link.label}</span>
               {link.icon && <span className="nav-icon">{link.icon}</span>}
-              
             </Link>
           </li>
         ))}

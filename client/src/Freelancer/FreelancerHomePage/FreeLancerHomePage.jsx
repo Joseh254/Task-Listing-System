@@ -1,4 +1,3 @@
-
 import FreelancerNav from "../FreelancerNav/FreelancerNav";
 import "./FreelancerHome.css";
 
