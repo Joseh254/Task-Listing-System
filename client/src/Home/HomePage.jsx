@@ -5,11 +5,11 @@ import "./HomePage.css";
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">TaskFlow</div>
+      <div className="logo">TaskListing</div>
       <div className="nav-links">
         <a href="#features">Features</a>
         <a href="#how">How It Works</a>
-        <a href="/login">Login</a>
+        
         <a href="/register" className="nav-btn">Get Started</a>
       </div>
     </nav>
@@ -89,7 +89,7 @@ function CTA() {
     <section className="cta">
       <h2>Ready to Get Started?</h2>
       <p>Create an account and start posting or completing tasks today.</p>
-      <a href="/register" className="primary-btn">
+      <a href="/register" className="create-account">
         Create Account
       </a>
     </section>
