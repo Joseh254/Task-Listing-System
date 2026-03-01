@@ -9,7 +9,7 @@ function Navbar() {
       <div className="nav-links">
         <a href="#features">Features</a>
         <a href="#how">How It Works</a>
-        
+        <a href="/login" className="nav-lgn">Login</a>
         <a href="/register" className="nav-btn">Get Started</a>
       </div>
     </nav>
