@@ -142,7 +142,7 @@ function AdminHomePage() {
 
         {/* Stats Overview */}
         <div className="admin-stats-grid">
-          <StatCard title="Total Users" value="124" />
+          <StatCard title="Total Clients" value="124" />
           <StatCard title="Active Freelancers" value="45" />
           <StatCard title="Pending Requests" value="6" />
           <StatCard title="Total Published Jobs" value="38" />
