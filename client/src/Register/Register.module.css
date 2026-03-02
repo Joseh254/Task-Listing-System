@@ -1,10 +1,15 @@
 .card {
   background: white;
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   max-width: 550px;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 3;
 }
 
 .title {
@@ -15,6 +20,8 @@
 .form {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+
   gap: 15px;
 }
 

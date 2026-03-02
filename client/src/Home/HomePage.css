@@ -6,8 +6,22 @@
   padding: 20px 10%;
   background-color: var(--color-secondary);
   color: var(--color-white);
-  z-index: 1;
+  position: relative;
 }
+
+/* Desktop Links */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 0.95rem;
+}
+
 .nav-lgn,
 .nav-btn {
   background: none;
@@ -22,29 +36,92 @@
   padding: 8px 16px;
   border-radius: 5px;
 }
+
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
-.nav-links {
+/* ===== MOBILE ===== */
+
+.mobile-home {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  width: 100%;
+}
+.homeIcon {
   display: flex;
-  gap: 20px;
-  align-items: center;
+  justify-content: flex-end;
+}
+/* Mobile Dropdown */
+.mobile-menu {
+  position: absolute;
+  top: 62px;
+  left: 0%;
+  background: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.2s ease;
 }
 
-.nav-links a {
+.mobile-menu a {
   text-decoration: none;
-  color: white;
+  color: #111827;
+}
+
+.mobile-menu button {
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
   font-size: 0.95rem;
 }
 
-.nav-btn {
-  background-color: #111827;
-  padding: 8px 16px;
+.mobile-btn {
+  background: #111827;
+  color: white;
+  padding: 8px 10px;
   border-radius: 5px;
 }
 
+/* Animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .logo {
+    display: none; /* remove logo */
+  }
+
+  .nav-links {
+    display: none; /* hide desktop links */
+  }
+
+  .mobile-home {
+    display: block; /* show icon */
+    color: white;
+  }
+
+  .navbar {
+    padding: 15px 5%;
+  }
+}
 /* ===== HERO ===== */
 .hero {
   text-align: center;

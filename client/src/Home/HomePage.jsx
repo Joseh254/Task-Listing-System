@@ -1,12 +1,19 @@
 import React, { useState } from "react";
+import { FaHome } from "react-icons/fa";
+
 import "./HomePage.css";
 import Modal from "../ReusableComponents/OpenModal/OpenModal";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 function Navbar({ openLogin, openRegister }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <nav className="navbar">
+      {/* Logo (hidden on mobile) */}
       <div className="logo">TaskListing</div>
+
+      {/* Desktop Links */}
       <div className="nav-links">
         <a href="#features">Features</a>
         <a href="#how">How It Works</a>
@@ -17,6 +24,40 @@ function Navbar({ openLogin, openRegister }) {
           Get Started
         </button>
       </div>
+
+      {/* Mobile Icon */}
+      <div className="mobile-home" onClick={() => setMobileOpen(!mobileOpen)}>
+        <FaHome className="homeIcon" />
+      </div>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileOpen && (
+        <div className="mobile-menu">
+          <a href="#features" onClick={() => setMobileOpen(false)}>
+            Features
+          </a>
+          <a href="#how" onClick={() => setMobileOpen(false)}>
+            How It Works
+          </a>
+          <button
+            onClick={() => {
+              openLogin();
+              setMobileOpen(false);
+            }}
+          >
+            Login
+          </button>
+          <button
+            onClick={() => {
+              openRegister();
+              setMobileOpen(false);
+            }}
+            className="mobile-btn"
+          >
+            Get Started
+          </button>
+        </div>
+      )}
     </nav>
   );
 }
