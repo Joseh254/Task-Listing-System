@@ -4,7 +4,7 @@ import CustomerHomePage from "./Customer/CustomerHomePage/CustomerHomePage";
 import FreeLancerHomePage from "./Freelancer/FreelancerHomePage/FreeLancerHomePage";
 import HomePage from "./Home/HomePage";
 import Register from "./Register/Register";
-// import Login from "./Login/Login";
+
 function NotFound() {
   return <h1>404 - Page Not Found</h1>;
 }

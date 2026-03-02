@@ -1,5 +1,5 @@
 /* ===== NAVBAR ===== */
-.navbar {
+.home-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,20 +10,20 @@
 }
 
 /* Desktop Links */
-.nav-links {
+.home-nav-links {
   display: flex;
   gap: 20px;
   align-items: center;
 }
 
-.nav-links a {
+.home-nav-links a {
   text-decoration: none;
   color: white;
   font-size: 0.95rem;
 }
 
-.nav-lgn,
-.nav-btn {
+.home-nav-lgn,
+.home-nav-btn {
   background: none;
   border: none;
   color: white;
@@ -31,13 +31,13 @@
   font-size: 0.95rem;
 }
 
-.nav-btn {
+.home-nav-btn {
   background-color: #111827;
   padding: 8px 16px;
   border-radius: 5px;
 }
 
-.logo {
+.home-logo {
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -249,7 +249,7 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .navbar {
+  .home-navbar {
     flex-direction: column;
     gap: 15px;
   }

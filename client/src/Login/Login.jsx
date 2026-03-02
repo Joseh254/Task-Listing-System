@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
+import {useNavigate} from 'react-router-dom'
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./Login.module.css";
 import { FaGoogle } from "react-icons/fa";
 
 function Login() {
+  const [loading, setLoading] = useState(false);
+const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -11,7 +17,6 @@ function Login() {
     },
     validate: (values) => {
       const errors = {};
-
       if (!values.email) {
         errors.email = "Email is required";
       } else if (!/\S+@\S+\.\S+/.test(values.email)) {
@@ -20,19 +25,52 @@ function Login() {
 
       if (!values.password) {
         errors.password = "Password is required";
-      } else if (values.password.length < 6) {
-        errors.password = "Password must be at least 6 characters";
-      }
+      } 
 
       return errors;
     },
-    onSubmit: (values) => {
-      console.log("Form Data:", values);
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/login",
+          values,
+          {
+            withCredentials: true, // Important for cookies
+          }
+        );
+
+        if (response.data.success) {
+          toast.success(response.data.message || "Logged in successfully!");
+          localStorage.setItem("user", JSON.stringify(response.data.data));
+          if(response.data.data && response.data.data.role==="freelancer"){
+navigate("/freelancer")
+          }
+                   if(response.data.data && response.data.data.role==="customer"){
+navigate("/customer")
+          } 
+                    if(response.data.data && response.data.data.role==="admin"){
+navigate("/admin")
+          }
+        } else {
+          toast.error(response.data.message || "Login failed!");
+        }
+      } catch (error) {
+        // If server doesn’t respond or returns unexpected error
+        const message =
+          error?.response?.data?.message ||
+          "Server did not respond. Please try again later!";
+        toast.error(message);
+        console.error("Login error:", error);
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
   return (
     <div className={styles.container}>
+      <ToastContainer />
       <div className={styles.card}>
         <h2 className={styles.title}>Login</h2>
 
@@ -45,6 +83,7 @@ function Login() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.email}
+              disabled={loading}
             />
             {formik.touched.email && formik.errors.email && (
               <span className={styles.error}>{formik.errors.email}</span>
@@ -59,19 +98,24 @@ function Login() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.password}
+              disabled={loading}
             />
             {formik.touched.password && formik.errors.password && (
               <span className={styles.error}>{formik.errors.password}</span>
             )}
           </div>
 
-          <button type="Login" className={styles.loginBtn}>
-            Login
+          <button
+            type="submit"
+            className={styles.loginBtn}
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
 
           <div className={styles.divider}>OR</div>
 
-          <button type="button" className={styles.googleBtn}>
+          <button type="button" className={styles.googleBtn} disabled={loading}>
             <FaGoogle className={styles.icon} />
             Login with Google
           </button>
