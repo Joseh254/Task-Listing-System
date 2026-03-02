@@ -4,7 +4,7 @@ import CustomerHomePage from "./Customer/CustomerHomePage/CustomerHomePage";
 import FreeLancerHomePage from "./Freelancer/FreelancerHomePage/FreeLancerHomePage";
 import HomePage from "./Home/HomePage";
 import Register from "./Register/Register";
-import Login from "./Login/Login";
+// import Login from "./Login/Login";
 function NotFound() {
   return <h1>404 - Page Not Found</h1>;
 }
@@ -17,8 +17,8 @@ function App() {
         <Route path="/admin" element={<AdminHomePage />} />
         <Route path="/freeLancer" element={<FreeLancerHomePage />} />
         <Route path="/customer" element={<CustomerHomePage />} />
-        <Route path="/login" element={<Login />} />
-         <Route path="/register" element={<Register />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

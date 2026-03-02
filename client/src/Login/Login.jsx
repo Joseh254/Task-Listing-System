@@ -65,8 +65,8 @@ function Login() {
             )}
           </div>
 
-          <button type="submit" className={styles.loginBtn}>
-            Login with Email
+          <button type="Login" className={styles.loginBtn}>
+            Login
           </button>
 
           <div className={styles.divider}>OR</div>

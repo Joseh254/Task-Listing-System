@@ -1,36 +1,45 @@
 .card {
-  background: var(--color-light);
-  padding: 5px;
+  background: white;
+  padding: 30px;
   width: 100%;
-  max-width: 400px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 550px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .title {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .inputGroup {
-  margin-bottom: 20px;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-.inputGroup input {
-  padding: 12px;
+.inputGroup input,
+.inputGroup select {
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 14px;
 }
 
-.inputGroup input:focus {
+.inputGroup input:focus,
+.inputGroup select:focus {
   outline: none;
   border-color: #4a90e2;
 }
@@ -38,22 +47,21 @@
 .error {
   color: red;
   font-size: 12px;
-  margin-top: 5px;
+  margin-top: 3px;
 }
 
-.loginBtn {
+.registerBtn {
   padding: 12px;
-  background: var(--color-primary);
+  background-color: var(--color-secondary);
   color: white;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 15px;
   font-weight: 600;
+  cursor: pointer;
 }
 
-.loginBtn:hover {
-  background: var(--color-secondary);
+.registerBtn:hover {
+  background: var(--color-primary);
 }
 
 .divider {
@@ -82,10 +90,7 @@
 }
 
 .links {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-top: 15px;
   font-size: 13px;
   text-align: center;
 }
@@ -97,4 +102,11 @@
 
 .links a:hover {
   text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .row {
+    flex-direction: column;
+  }
 }

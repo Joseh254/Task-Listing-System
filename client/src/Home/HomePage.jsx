@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "./HomePage.css";
-
-/* ================= NAVBAR ================= */
-function Navbar() {
+import Modal from "../ReusableComponents/OpenModal/OpenModal";
+import Login from "../Login/Login";
+import Register from "../Register/Register";
+function Navbar({ openLogin, openRegister }) {
   return (
     <nav className="navbar">
       <div className="logo">TaskListing</div>
       <div className="nav-links">
         <a href="#features">Features</a>
         <a href="#how">How It Works</a>
-        <a href="/login" className="nav-lgn">Login</a>
-        <a href="/register" className="nav-btn">Get Started</a>
+        <button className="nav-lgn" onClick={openLogin}>
+          Login
+        </button>
+        <button className="nav-btn" onClick={openRegister}>
+          Get Started
+        </button>
       </div>
     </nav>
   );
 }
 
 /* ================= HERO ================= */
-function Hero() {
+function Hero({ openRegister }) {
   return (
     <section className="hero">
       <h1>Post Tasks. Find Talent. Get Work Done.</h1>
@@ -26,12 +31,12 @@ function Hero() {
         efficiently and securely.
       </p>
       <div className="hero-buttons">
-        <a href="/register" className="primary-btn">
+        <button className="primary-btn" onClick={openRegister}>
           Join as Client
-        </a>
-        <a href="/register" className="secondary-btn">
+        </button>
+        <button className="secondary-btn" onClick={openRegister}>
           Work as Freelancer
-        </a>
+        </button>
       </div>
     </section>
   );
@@ -84,14 +89,14 @@ function HowItWorks() {
 }
 
 /* ================= CTA ================= */
-function CTA() {
+function CTA({ openRegister }) {
   return (
     <section className="cta">
       <h2>Ready to Get Started?</h2>
       <p>Create an account and start posting or completing tasks today.</p>
-      <a href="/register" className="create-account">
+      <button className="create-account" onClick={openRegister}>
         Create Account
-      </a>
+      </button>
     </section>
   );
 }
@@ -107,15 +112,44 @@ function Footer() {
 
 /* ================= MAIN ================= */
 function HomePage() {
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+
+  const openLogin = () => {
+    setShowRegister(false);
+    setShowLogin(true);
+  };
+
+  const openRegister = () => {
+    setShowLogin(false);
+    setShowRegister(true);
+  };
+
+  const closeModal = () => {
+    setShowLogin(false);
+    setShowRegister(false);
+  };
+
   return (
-    <div>
-      <Navbar />
-      <Hero />
+    <>
+      <Navbar openLogin={openLogin} openRegister={openRegister} />
+
+      <Hero openRegister={openRegister} />
       <Features />
       <HowItWorks />
-      <CTA />
+      <CTA openRegister={openRegister} />
       <Footer />
-    </div>
+
+      {/* Login Modal */}
+      <Modal isOpen={showLogin} onClose={closeModal}>
+        <Login />
+      </Modal>
+
+      {/* Register Modal */}
+      <Modal isOpen={showRegister} onClose={closeModal}>
+        <Register />
+      </Modal>
+    </>
   );
 }
 
