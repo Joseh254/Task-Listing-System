@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import register from "./Routes/Register/Register.js";
+import login from './Routes/Login/Login.js'
 dotenv.config();
 
 const app = express();
@@ -21,7 +22,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to task listing system server!");
 });
 app.use("/api/register", register);
-
+app.use("/api/login", login);
 app.listen(3000, () => {
   console.log(`Server running on port 3000`);
 });
