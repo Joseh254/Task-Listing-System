@@ -4,7 +4,7 @@ import CustomerHomePage from "./Customer/CustomerHomePage/CustomerHomePage";
 import FreeLancerHomePage from "./Freelancer/FreelancerHomePage/FreeLancerHomePage";
 import HomePage from "./Home/HomePage";
 import Register from "./Register/Register";
-
+import PendingApproval from "./PendingApproval/PendingApproval";
 function NotFound() {
   return <h1>404 - Page Not Found</h1>;
 }
@@ -19,10 +19,11 @@ function App() {
         <Route path="/customer" element={<CustomerHomePage />} />
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/register" element={<Register />} />
+        <Route path="/verification-pending" element={<PendingApproval />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
+// 512 695 370
 export default App;

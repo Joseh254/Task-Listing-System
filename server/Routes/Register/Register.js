@@ -31,19 +31,29 @@ export async function SignUpController(req, res) {
         updatedAt: true,
       },
     });
+    
 
     return res.status(201).json({
       success: true,
       message: "Account created successfully!",
       data: createdUser,
     });
+    
   } catch (error) {
-    console.error("Signup error:", error);
-    return res.status(500).json({
+  console.error("Register error:", error);
+
+  if (error.code === "P2002") {
+    return res.status(409).json({
       success: false,
-      message: "Internal server error",
+      error: "Email already exists",
     });
   }
+
+  return res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+}
 }
 
 const router = Router();

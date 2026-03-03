@@ -1,8 +1,14 @@
 import { useFormik } from "formik";
 import styles from "./Register.module.css";
 import { FaGoogle } from "react-icons/fa";
+import axios from "axios";
+import { toast,ToastContainer } from "react-toastify";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       fname: "",
@@ -45,9 +51,60 @@ function Register() {
 
       return errors;
     },
-    onSubmit: (values) => {
-      console.log("Registration Data:", values);
+  onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/register",
+          {
+            email: values.email,
+            firstName: values.fname,
+            lastName: values.lname,
+            password: values.password,
+            role: values.role,
+            category: values.category,
+          }
+        );
+
+        const userData = response.data.data;
+
+        // ✅ Save user to localStorage
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        // ✅ If verified, navigate based on role
+        if (userData.isVerified) {
+          toast.success(response.data.message);
+
+          if (userData.role === "admin") {
+            navigate("/admin/dashboard");
+          } else if (userData.role === "customer") {
+            navigate("/customer/home");
+          } else if (userData.role === "freelancer") {
+            navigate("/freelancer/home");
+          }
+        } 
+        // ✅ If not verified, navigate to “under review” page
+        else {
+          navigate("/");
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 409) {
+            toast.error("This email is already registered. Try logging in.");
+          } else if (error.response.status === 400) {
+            toast.error(error.response.data.message || "Invalid input");
+          } else {
+            toast.error(error.response.data.message || "Registration failed");
+          }
+        } else if (error.request) {
+          toast.error("Server is not reachable. Please try again later.");
+        } else {
+          toast.error("Something went wrong.");
+        }
+      } finally {
+        setSubmitting(false);
+      }
     },
+  
   });
 
   return (
@@ -177,6 +234,7 @@ function Register() {
           </div>
         </form>
       </div>
+      <ToastContainer/>
     </div>
   );
 }
