@@ -8,7 +8,7 @@ import Register from "../Register/Register";
 
 import "./HomePage.css";
 
-function Navbar({ openLogin, openRegister }) {
+function HomeNavbar({ openLogin, openRegister }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -128,7 +128,7 @@ function HomePage() {
 
   return (
     <>
-      <Navbar openLogin={openLogin} openRegister={openRegister} />
+      <HomeNavbar openLogin={openLogin} openRegister={openRegister} />
       <Hero openRegister={openRegister} />
       <Features />
       <HowItWorks />

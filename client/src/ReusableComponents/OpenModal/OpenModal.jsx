@@ -11,7 +11,7 @@ function Modal({ isOpen, onClose, children }) {
           &times;
         </button>
         {children}
-      </div>
+      </div> 
     </div>
   );
 }
