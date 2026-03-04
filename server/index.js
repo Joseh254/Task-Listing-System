@@ -5,6 +5,7 @@ import cors from "cors";
 
 import register from "./Routes/Register/Register.js";
 import login from "./Routes/Login/Login.js";
+import users from './Routes/Users/AllUsers/AllUsers.js'
 dotenv.config();
 
 const app = express();
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/register", register);
 app.use("/api/login", login);
+app.use("/api/users", users);
 app.listen(3000, () => {
   console.log(`Server running on port 3000`);
 });
