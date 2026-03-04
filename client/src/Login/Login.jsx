@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +9,7 @@ import { FaGoogle } from "react-icons/fa";
 
 function Login() {
   const [loading, setLoading] = useState(false);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -25,7 +25,7 @@ const navigate = useNavigate()
 
       if (!values.password) {
         errors.password = "Password is required";
-      } 
+      }
 
       return errors;
     },
@@ -37,26 +37,37 @@ const navigate = useNavigate()
           values,
           {
             withCredentials: true, // Important for cookies
-          }
+          },
         );
 
         if (response.data.success) {
+          const userData = response.data.data;
+          localStorage.setItem("user", JSON.stringify(userData));
           toast.success(response.data.message || "Logged in successfully!");
-          localStorage.setItem("user", JSON.stringify(response.data.data));
-          if(response.data.data && response.data.data.role==="freelancer"){
-navigate("/freelancer")
-          }
-                   if(response.data.data && response.data.data.role==="customer"){
-navigate("/customer")
-          } 
-                    if(response.data.data && response.data.data.role==="admin"){
-navigate("/admin")
+
+          // ✅ Only navigate if verified
+          if (userData.isVerified) {
+            switch (userData.role) {
+              case "freelancer":
+                navigate("/freelancer");
+                break;
+              case "customer":
+                navigate("/customer");
+                break;
+              case "admin":
+                navigate("/admin");
+                break;
+              default:
+                navigate("/"); // fallback
+            }
+          } else {
+            // Not verified → redirect to verification pending
+            navigate("/verification-pending");
           }
         } else {
           toast.error(response.data.message || "Login failed!");
         }
       } catch (error) {
-        // If server doesn’t respond or returns unexpected error
         const message =
           error?.response?.data?.message ||
           "Server did not respond. Please try again later!";
@@ -105,11 +116,7 @@ navigate("/admin")
             )}
           </div>
 
-          <button
-            type="submit"
-            className={styles.loginBtn}
-            disabled={loading}
-          >
+          <button type="submit" className={styles.loginBtn} disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
 

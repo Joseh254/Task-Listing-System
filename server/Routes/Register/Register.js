@@ -5,7 +5,8 @@ import { ValidateUserMiddleware } from "../../Middlewares/register/RegisterMiddl
 const prisma = new PrismaClient();
 console.log("Register route loaded");
 export async function SignUpController(req, res) {
-  const { email, firstName, lastName, password, role, category } = req.body;
+  const { email, firstName, lastName, password, role, category, isVerified } =
+    req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -18,6 +19,7 @@ export async function SignUpController(req, res) {
         role,
         password: hashedPassword,
         category,
+        isVerified,
       },
       select: {
         id: true,
@@ -31,32 +33,30 @@ export async function SignUpController(req, res) {
         updatedAt: true,
       },
     });
-    
 
     return res.status(201).json({
       success: true,
       message: "Account created successfully!",
       data: createdUser,
     });
-    
   } catch (error) {
-  console.log("FULL ERROR:", error);
-  console.log("ERROR CODE:", error.code);
-  console.log("META:", error.meta);
+    console.log("FULL ERROR:", error);
+    console.log("ERROR CODE:", error.code);
+    console.log("META:", error.meta);
 
-  if (error.code === "P2002") {
-    return res.status(409).json({
+    if (error.code === "P2002") {
+      return res.status(409).json({
+        success: false,
+        error: "Unique constraint failed",
+        meta: error.meta,
+      });
+    }
+
+    return res.status(500).json({
       success: false,
-      error: "Unique constraint failed",
-      meta: error.meta,
+      message: "Internal server error",
     });
   }
-
-  return res.status(500).json({
-    success: false,
-    message: "Internal server error",
-  });
-}
 }
 
 const router = Router();

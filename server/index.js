@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import register from "./Routes/Register/Register.js";
-import login from './Routes/Login/Login.js'
+import login from "./Routes/Login/Login.js";
 dotenv.config();
 
 const app = express();

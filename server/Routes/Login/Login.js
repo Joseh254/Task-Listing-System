@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 
-
 import { Router } from "express";
 import { loginMiddleware } from "../../Middlewares/Login/Login.Middleware.js";
 
@@ -10,7 +9,6 @@ const prisma = new PrismaClient();
 
 export async function LoginController(request, response) {
   const { email, password } = request.body;
-
 
   try {
     const userExists = await prisma.user.findFirst({
@@ -35,11 +33,11 @@ export async function LoginController(request, response) {
 
       firstName: userExists.firstName,
       lastName: userExists.lastName,
-     phone:userExists.phone,
+      phone: userExists.phone,
       role: userExists.role,
       email: userExists.email,
-      category:userExists.category, 
- 
+      category: userExists.category,
+      isVerified: userExists.isVerified,
     };
 
     // Access token - 1 day
@@ -55,7 +53,7 @@ export async function LoginController(request, response) {
       accessToken,
     });
   } catch (error) {
-    console.error("Error logging in user:", error.message,error);
+    console.error("Error logging in user:", error.message, error);
 
     return response
       .status(500)

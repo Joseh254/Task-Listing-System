@@ -2,7 +2,16 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 export async function ValidateUserMiddleware(req, res, next) {
-  const { email, firstName, lastName, password, role, category, phone } = req.body;
+  const {
+    email,
+    firstName,
+    lastName,
+    password,
+    role,
+    category,
+    phone,
+    isVerified,
+  } = req.body;
 
   try {
     // Required fields
@@ -18,12 +27,16 @@ export async function ValidateUserMiddleware(req, res, next) {
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-      error: "Invalid email format",
+        error: "Invalid email format",
       });
     }
 
     // Optional firstName validation
-    if (firstName && firstName.trim() !== "" && (firstName.length < 3 || firstName.length > 50)) {
+    if (
+      firstName &&
+      firstName.trim() !== "" &&
+      (firstName.length < 3 || firstName.length > 50)
+    ) {
       return res.status(400).json({
         success: false,
         error: "First name must be between 3 and 50 characters",
@@ -31,7 +44,11 @@ export async function ValidateUserMiddleware(req, res, next) {
     }
 
     // Optional lastName validation
-    if (lastName && lastName.trim() !== "" && (lastName.length < 3 || lastName.length > 50)) {
+    if (
+      lastName &&
+      lastName.trim() !== "" &&
+      (lastName.length < 3 || lastName.length > 50)
+    ) {
       return res.status(400).json({
         success: false,
         error: "Last name must be between 3 and 50 characters",
@@ -41,14 +58,23 @@ export async function ValidateUserMiddleware(req, res, next) {
     // Check if email already exists
     const existingEmailUser = await prisma.user.findFirst({ where: { email } });
     if (existingEmailUser) {
-      return res.status(409).json({ // 409 Conflict
+      return res.status(409).json({
+        // 409 Conflict
         error: "User with this email already exists",
       });
     }
 
     // Check phone if provided
+    if (typeof isVerified !== "boolean") {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid verification value",
+      });
+    }
     if (phone) {
-      const existingPhoneUser = await prisma.user.findFirst({ where: { phone } });
+      const existingPhoneUser = await prisma.user.findFirst({
+        where: { phone },
+      });
       if (existingPhoneUser) {
         return res.status(409).json({
           success: false,

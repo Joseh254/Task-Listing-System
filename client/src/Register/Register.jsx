@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import styles from "./Register.module.css";
 import { FaGoogle } from "react-icons/fa";
 import axios from "axios";
-import { toast,ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -51,44 +51,45 @@ function Register() {
 
       return errors;
     },
-  onSubmit: async (values, { setSubmitting }) => {
-      try {const response = await axios.post(
-  "http://localhost:3000/api/register",
-  {
-    email: values.email,
-    firstName: values.fname,
-    lastName: values.lname,
-    password: values.password,
-    role: values.role,
-    category: values.category,
-  },
-  { withCredentials: true }
-);
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/register",
+          {
+            email: values.email,
+            firstName: values.fname,
+            lastName: values.lname,
+            password: values.password,
+            role: values.role,
+            category: values.category,
+          },
+          { withCredentials: true },
+        );
 
-// console.log(response, "res");
+        // console.log(response, "res");
 
-const userData = response.data.data; 
+        const userData = response.data.data;
 
-if (response.data.success === true) {
-  localStorage.setItem("user", JSON.stringify(userData));
-  toast.success(response.data.message);
+        if (response.data.success === true) {
+          localStorage.setItem("user", JSON.stringify(userData));
+          toast.success(response.data.message);
+        }
 
-}
-
-// Now this works
-if (userData && userData.isVerified===true) {
-  if (userData.role === "admin") {
-    navigate("/admin/dashboard");
-  } else if (userData.role === "customer") {
-    navigate("/customer/home");
-  } else if (userData.role === "freelancer") {
-    navigate("/freelancer/home");
-  }
-} else {
-  navigate("/verification-pending");
-} } catch (error) {
+        // Now this works
+        if (userData && userData.isVerified === true) {
+          if (userData.role === "admin") {
+            navigate("/admin/dashboard");
+          } else if (userData.role === "customer") {
+            navigate("/customer/home");
+          } else if (userData.role === "freelancer") {
+            navigate("/freelancer/home");
+          }
+        } else {
+          navigate("/verification-pending");
+        }
+      } catch (error) {
         console.log(error);
-        
+
         if (error.response) {
           if (error.response.status === 409) {
             toast.error("This email is already registered. Try logging in.");
@@ -106,7 +107,6 @@ if (userData && userData.isVerified===true) {
         setSubmitting(false);
       }
     },
-  
   });
 
   return (
@@ -236,7 +236,7 @@ if (userData && userData.isVerified===true) {
           </div>
         </form>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

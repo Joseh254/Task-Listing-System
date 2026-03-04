@@ -13,8 +13,8 @@ function FreelancerNav() {
   ];
 
   function handleLogout() {
-    localStorage.removeItem("user");   // better than clear()
-    navigate("/", { replace: true });  // redirect to home
+    localStorage.removeItem("user"); // better than clear()
+    navigate("/", { replace: true }); // redirect to home
   }
 
   return (
