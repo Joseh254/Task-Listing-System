@@ -9,7 +9,7 @@ export async function ValidateUserMiddleware(req, res, next) {
     if (!email || !password || !role || !category) {
       return res.status(400).json({
         success: false,
-        message: "Fields marked with * are required",
+        error: "Fields marked with * are required",
       });
     }
 
@@ -18,7 +18,7 @@ export async function ValidateUserMiddleware(req, res, next) {
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid email format",
+      error: "Invalid email format",
       });
     }
 
@@ -26,7 +26,7 @@ export async function ValidateUserMiddleware(req, res, next) {
     if (firstName && firstName.trim() !== "" && (firstName.length < 3 || firstName.length > 50)) {
       return res.status(400).json({
         success: false,
-        message: "First name must be between 3 and 50 characters",
+        error: "First name must be between 3 and 50 characters",
       });
     }
 
@@ -34,7 +34,7 @@ export async function ValidateUserMiddleware(req, res, next) {
     if (lastName && lastName.trim() !== "" && (lastName.length < 3 || lastName.length > 50)) {
       return res.status(400).json({
         success: false,
-        message: "Last name must be between 3 and 50 characters",
+        error: "Last name must be between 3 and 50 characters",
       });
     }
 
@@ -42,8 +42,7 @@ export async function ValidateUserMiddleware(req, res, next) {
     const existingEmailUser = await prisma.user.findFirst({ where: { email } });
     if (existingEmailUser) {
       return res.status(409).json({ // 409 Conflict
-        success: false,
-        message: "User with this email already exists",
+        error: "User with this email already exists",
       });
     }
 
@@ -53,7 +52,7 @@ export async function ValidateUserMiddleware(req, res, next) {
       if (existingPhoneUser) {
         return res.status(409).json({
           success: false,
-          message: "User with this phone number already exists",
+          error: "User with this phone number already exists",
         });
       }
     }
@@ -64,7 +63,7 @@ export async function ValidateUserMiddleware(req, res, next) {
     console.error("Error validating user inputs:", error);
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      error: "Internal server error",
     });
   }
 }

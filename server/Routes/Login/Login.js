@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 
 import { Router } from "express";
-import { loginMiddleware } from "../../Middlewares/register/Login/Login.Middleware.js";
+import { loginMiddleware } from "../../Middlewares/Login/Login.Middleware.js";
 
 const prisma = new PrismaClient();
 
@@ -38,7 +38,7 @@ export async function LoginController(request, response) {
      phone:userExists.phone,
       role: userExists.role,
       email: userExists.email,
-      category:userExists.category,
+      category:userExists.category, 
  
     };
 

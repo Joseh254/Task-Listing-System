@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { Router } from "express";
 import { ValidateUserMiddleware } from "../../Middlewares/register/RegisterMiddleware.js";
 const prisma = new PrismaClient();
-
+console.log("Register route loaded");
 export async function SignUpController(req, res) {
   const { email, firstName, lastName, password, role, category } = req.body;
 
@@ -40,12 +40,15 @@ export async function SignUpController(req, res) {
     });
     
   } catch (error) {
-  console.error("Register error:", error);
+  console.log("FULL ERROR:", error);
+  console.log("ERROR CODE:", error.code);
+  console.log("META:", error.meta);
 
   if (error.code === "P2002") {
     return res.status(409).json({
       success: false,
-      error: "Email already exists",
+      error: "Unique constraint failed",
+      meta: error.meta,
     });
   }
 

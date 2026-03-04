@@ -7,7 +7,7 @@ export function loginMiddleware(request, response, next) {
         .status(400)
         .json({ success: false, message: "email and password are required" });
     }
-    next();
+    next(); 
   } catch (error) {
     console.log("error login middleware", error.message);
     return response
