@@ -11,9 +11,8 @@ import PendingApproval from "./PendingApproval/PendingApproval";
 import Users from "./Admin/Users/Users";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Unauthorized from "./Unauthorized/Unauthorized";
-function NotFound() {
-  return <h1>404 - Page Not Found</h1>;
-}
+import NotFound from "./NotFound/NotFound";
+
 
 function App() {
   return (

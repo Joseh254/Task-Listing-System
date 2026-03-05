@@ -11,7 +11,7 @@ function FreelancerNav() {
     { label: "Earnings", path: "/freelancer/earnings", icon: <FaWallet /> },
     { label: "Profile", path: "/freelancer/profile" },
   ];
-
+ 
   function handleLogout() {
     localStorage.removeItem("user"); // better than clear()
     navigate("/", { replace: true }); // redirect to home
