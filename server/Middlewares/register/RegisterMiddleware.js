@@ -65,7 +65,7 @@ export async function ValidateUserMiddleware(req, res, next) {
     }
 
     // Check phone if provided
-    if (typeof isVerified !== "boolean") {
+    if ( isVerified && typeof isVerified !== "boolean") {
       return res.status(400).json({
         success: false,
         error: "Invalid verification value",
