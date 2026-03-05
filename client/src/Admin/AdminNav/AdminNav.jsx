@@ -8,7 +8,7 @@ function AdminNav() {
     { label: "Users", path: "/admin/users", icon: FaUsers },
     { label: "Settings", path: "/admin/settings", icon: FaCog },
     { label: "Logout", path: "/logout", icon: FaSignOutAlt },
-  ];
+  ]; 
 
   return <ReusableNav links={adminLinks} logo="Admin Panel" />;
 }
