@@ -17,10 +17,7 @@ function NotFound() {
           Sorry, the page you are looking for doesn't exist or has been moved.
         </p>
 
-        <button
-          className={styles.homeBtn}
-          onClick={() => navigate("/")}
-        >
+        <button className={styles.homeBtn} onClick={() => navigate("/")}>
           <FaHome /> Go Back Home
         </button>
       </div>

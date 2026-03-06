@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./PendingApproval.module.css";
 import { FaClock } from "react-icons/fa";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 const PendingApproval = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   function handleLogout() {
     localStorage.removeItem("user"); // better than clear()
     navigate("/", { replace: true }); // redirect to home
@@ -20,7 +20,9 @@ const PendingApproval = () => {
         <p className={styles.note}>
           This process usually takes a few hours to 1 business day.
         </p>
-        <button className={styles.backToHome} onClick={handleLogout}>Back to Home</button>
+        <button className={styles.backToHome} onClick={handleLogout}>
+          Back to Home
+        </button>
       </div>
     </div>
   );

@@ -13,7 +13,6 @@ import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Unauthorized from "./Unauthorized/Unauthorized";
 import NotFound from "./NotFound/NotFound";
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -43,7 +42,7 @@ function App() {
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <ToastContainer position="top-right" autoClose={3000}/>
+      <ToastContainer position="top-right" autoClose={3000} />
     </BrowserRouter>
   );
 }

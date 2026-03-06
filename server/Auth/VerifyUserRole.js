@@ -5,10 +5,13 @@ import jwt from "jsonwebtoken";
 // Verify JWT Token Middleware
 // --------------------------
 export function verifyToken(req, res, next) {
-  const token = req.cookies?.access_token || req.headers["authorization"]?.split(" ")[1];
+  const token =
+    req.cookies?.access_token || req.headers["authorization"]?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ success: false, message: "No token provided" });
+    return res
+      .status(401)
+      .json({ success: false, message: "No token provided" });
   }
 
   try {
@@ -30,7 +33,9 @@ export function allowRoles(...roles) {
     }
 
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ success: false, message: "Forbidden: role not allowed" });
+      return res
+        .status(403)
+        .json({ success: false, message: "Forbidden: role not allowed" });
     }
 
     next();
@@ -46,7 +51,9 @@ export function requireVerified(req, res, next) {
   }
 
   if (!req.user.isVerified) {
-    return res.status(403).json({ success: false, message: "User not verified" });
+    return res
+      .status(403)
+      .json({ success: false, message: "User not verified" });
   }
 
   next();

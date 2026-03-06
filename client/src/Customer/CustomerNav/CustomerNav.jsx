@@ -1,11 +1,7 @@
 import React from "react";
 import ReusableNav from "../../ReusableComponents/ReusableNav/ReusableNav";
 function CustomerNav() {
-  const adminLinks = [
-    { label: "Dashboard", path: "/admin/dashboard" },
-    { label: "Users", path: "/admin/users" },
-    { label: "Settings", path: "/admin/settings" },
-  ];
+  const adminLinks = [{ label: "Dashboard", path: "/" }];
   return (
     <>
       <ReusableNav links={adminLinks} logo="Contractor pannel" />

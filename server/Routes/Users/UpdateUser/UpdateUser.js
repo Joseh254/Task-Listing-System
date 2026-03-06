@@ -15,7 +15,7 @@ const updateUserSchema = Joi.object({
   email: Joi.string().email(),
   category: Joi.string().min(2).max(50),
   role: Joi.string().valid("admin", "freelancer", "customer"),
-  isVerified: Joi.boolean()
+  isVerified: Joi.boolean(),
 });
 
 router.patch("/:id", verifyToken, async (req, res) => {
@@ -23,7 +23,6 @@ router.patch("/:id", verifyToken, async (req, res) => {
   const currentUser = req.user;
 
   try {
-
     /*
     -----------------------
     USER PERMISSION CHECK
@@ -36,7 +35,7 @@ router.patch("/:id", verifyToken, async (req, res) => {
     if (!isAdmin && !isOwner) {
       return res.status(403).json({
         success: false,
-        message: "You cannot update another user"
+        message: "You cannot update another user",
       });
     }
 
@@ -48,14 +47,14 @@ router.patch("/:id", verifyToken, async (req, res) => {
 
     const { error, value } = updateUserSchema.validate(req.body, {
       abortEarly: false,
-      stripUnknown: true
+      stripUnknown: true,
     });
 
     if (error) {
       return res.status(400).json({
         success: false,
         message: "Validation error",
-        errors: error.details.map(e => e.message)
+        errors: error.details.map((e) => e.message),
       });
     }
 
@@ -66,21 +65,19 @@ router.patch("/:id", verifyToken, async (req, res) => {
     */
 
     if (!isAdmin) {
-
       if ("role" in value) {
         return res.status(403).json({
           success: false,
-          message: "You cannot change your role"
+          message: "You cannot change your role",
         });
       }
 
       if ("isVerified" in value) {
         return res.status(403).json({
           success: false,
-          message: "You cannot change verification status"
+          message: "You cannot change verification status",
         });
       }
-
     }
 
     /*
@@ -90,13 +87,13 @@ router.patch("/:id", verifyToken, async (req, res) => {
     */
 
     const existingUser = await prisma.user.findUnique({
-      where: { id: userId }
+      where: { id: userId },
     });
 
     if (!existingUser) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
 
@@ -116,22 +113,20 @@ router.patch("/:id", verifyToken, async (req, res) => {
         email: true,
         role: true,
         category: true,
-        isVerified: true
-      }
+        isVerified: true,
+      },
     });
 
     console.log(
-      `[USER UPDATED] ${currentUser.role} ${currentUser.id} updated user ${userId}`
+      `[USER UPDATED] ${currentUser.role} ${currentUser.id} updated user ${userId}`,
     );
 
     return res.status(200).json({
       success: true,
       message: "User updated successfully",
-      data: updatedUser
+      data: updatedUser,
     });
-
   } catch (error) {
-
     /*
     INTERNAL LOGGING
     */
@@ -141,14 +136,13 @@ router.patch("/:id", verifyToken, async (req, res) => {
       stack: error.stack,
       requester: currentUser?.id,
       targetUser: userId,
-      body: req.body
+      body: req.body,
     });
 
     return res.status(500).json({
       success: false,
-      message: "Something went wrong while updating user"
+      message: "Something went wrong while updating user",
     });
-
   }
 });
 

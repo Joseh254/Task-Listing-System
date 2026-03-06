@@ -27,7 +27,8 @@ function Users() {
       const res = await axios.get("http://localhost:3000/api/users", {
         headers: {
           Authorization: `Bearer ${token}`,
-        },withCredentials:true
+        },
+        withCredentials: true,
       });
 
       if (res.data.success) {
@@ -38,9 +39,7 @@ function Users() {
         toast.error(res.data.message || "Failed to fetch users");
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Error fetching users"
-      );
+      toast.error(error.response?.data?.message || "Error fetching users");
     } finally {
       setLoading(false);
     }
@@ -63,8 +62,7 @@ function Users() {
 
     if (verifyFilter !== "all") {
       filtered = filtered.filter(
-        (user) =>
-          user.isVerified === (verifyFilter === "verified")
+        (user) => user.isVerified === (verifyFilter === "verified"),
       );
     }
 
@@ -76,20 +74,15 @@ function Users() {
     try {
       setLoading(true);
 
-      const res = await axios.delete(
-        `http://localhost:3000/api/users/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.delete(`http://localhost:3000/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.success(res.data.message || "User removed");
 
       fetchUsers();
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to delete user"
-      );
+      toast.error(error.response?.data?.message || "Failed to delete user");
     } finally {
       setLoading(false);
     }
@@ -102,21 +95,18 @@ function Users() {
       const res = await axios.patch(
         `http://localhost:3000/api/users/verify/${user.id}`,
         { isVerified: !user.isVerified },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       toast.success(
         res.data.message ||
-          (user.isVerified
-            ? "User unverified"
-            : "User verified")
+          (user.isVerified ? "User unverified" : "User verified"),
       );
 
       fetchUsers();
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
-          "Failed to update verification"
+        error.response?.data?.message || "Failed to update verification",
       );
     } finally {
       setLoading(false);
@@ -127,16 +117,13 @@ function Users() {
   const indexOfLastUser = page * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
 
-  const currentUsers = filteredUsers.slice(
-    indexOfFirstUser,
-    indexOfLastUser
-  );
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
     <div className={styles.container}>
-      <AdminNav/>
+      <AdminNav />
       <h2>All Users</h2>
 
       {/* Filters */}
@@ -193,32 +180,22 @@ function Users() {
 
                   <td>{user.email}</td>
 
-                  <td className={styles.role}>
-                    {user.role}
-                  </td>
+                  <td className={styles.role}>{user.role}</td>
 
                   <td>{user.category}</td>
 
                   <td>
                     {user.isVerified ? (
-                      <span className={styles.verified}>
-                        Verified
-                      </span>
+                      <span className={styles.verified}>Verified</span>
                     ) : (
-                      <span className={styles.notVerified}>
-                        Not Verified
-                      </span>
+                      <span className={styles.notVerified}>Not Verified</span>
                     )}
                   </td>
 
                   <td className={styles.menuCell}>
                     <FaEllipsisV
                       onClick={() =>
-                        setActiveMenu(
-                          activeMenu === user.id
-                            ? null
-                            : user.id
-                        )
+                        setActiveMenu(activeMenu === user.id ? null : user.id)
                       }
                     />
 
@@ -226,31 +203,23 @@ function Users() {
                       <div className={styles.menu}>
                         <button
                           disabled={loading}
-                          onClick={() =>
-                            toast.info("Edit user page")
-                          }
+                          onClick={() => toast.info("Edit user page")}
                         >
                           Edit
                         </button>
 
                         <button
                           disabled={loading}
-                          onClick={() =>
-                            handleDelete(user.id)
-                          }
+                          onClick={() => handleDelete(user.id)}
                         >
                           Remove
                         </button>
 
                         <button
                           disabled={loading}
-                          onClick={() =>
-                            handleVerifyToggle(user)
-                          }
+                          onClick={() => handleVerifyToggle(user)}
                         >
-                          {user.isVerified
-                            ? "Unverify"
-                            : "Verify"}
+                          {user.isVerified ? "Unverify" : "Verify"}
                         </button>
                       </div>
                     )}

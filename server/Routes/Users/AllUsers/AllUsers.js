@@ -1,7 +1,11 @@
 // routes/admin/AllUsers.js
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-import { verifyToken, requireVerified,allowRoles } from "../../../Auth/VerifyUserRole.js";
+import {
+  verifyToken,
+  requireVerified,
+  allowRoles,
+} from "../../../Auth/VerifyUserRole.js";
 // import { verifyToken, requireVerified, allowRoles } from "../../auth.js";
 
 const router = express.Router();
@@ -10,9 +14,9 @@ const prisma = new PrismaClient();
 // GET /admin/all-users
 router.get(
   "/",
-  verifyToken,           // Verify JWT token
-  requireVerified,       // Ensure the admin is verified
-  allowRoles("admin"),   // Only admin can access
+  verifyToken, // Verify JWT token
+  requireVerified, // Ensure the admin is verified
+  allowRoles("admin"), // Only admin can access
   async (req, res) => {
     try {
       const users = await prisma.user.findMany({
@@ -40,7 +44,7 @@ router.get(
         message: "Internal server error",
       });
     }
-  }
+  },
 );
 
 export default router;

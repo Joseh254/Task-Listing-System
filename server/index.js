@@ -5,8 +5,8 @@ import cors from "cors";
 
 import register from "./Routes/Register/Register.js";
 import login from "./Routes/Login/Login.js";
-import users from './Routes/Users/AllUsers/AllUsers.js'
-import updateuser from './Routes/Users/UpdateUser/UpdateUser.js'
+import users from "./Routes/Users/AllUsers/AllUsers.js";
+import updateuser from "./Routes/Users/UpdateUser/UpdateUser.js";
 
 import tasks from "./Routes/Task/Tasks/Tasks.js";
 
