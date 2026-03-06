@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 function AdminNav() {
   const navigate = useNavigate();
   const adminLinks = [
-    { label: "Dashboard", path: "/admin/dashboard", icon: FaHome },
+    { label: "Dashboard", path: "/admin", icon: FaHome },
     { label: "Users", path: "/admin/users", icon: FaUsers },
-    { label: "Settings", path: "/admin/settings", icon: FaCog },
-    {},
+   
+  
   ];
   function handleLogout() {
     localStorage.removeItem("user"); // better than clear()

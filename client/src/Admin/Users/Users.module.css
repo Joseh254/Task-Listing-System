@@ -53,14 +53,15 @@ h2 {
 }
 
 .menuCell {
+  
   position: relative;
   cursor: pointer;
 }
 
 .menu {
   position: absolute;
-  right: 0;
-  top: 20px;
+  right: 20px;
+  top: 40px;
   background: white;
   border: 1px solid #ddd;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
