@@ -166,7 +166,7 @@ function CustomerHomePage() {
                 )}
               </p>
 
-              <p>💰 ${task.price}</p>
+              <p className={styles.price}>💰 ${task.price}</p>
               <p>📁 {task.category}</p>
 
               <p>
@@ -178,22 +178,35 @@ function CustomerHomePage() {
                 )}
               </p>
 
-              <p>Completed: {task.completed ? "Yes" : "No"}</p>
+              <p className={styles.completed}>
+                Completed: {task.completed ? "Yes" : "No"}
+              </p>
+              <p className={task.teken ? styles.taken : styles.notTaken}>
+                {" "}
+                {task.taken ? "Assigned" : "Open"}
+              </p>
 
-              <div className={styles.progressBar}>
-                <div
-                  style={{ width: `${task.Progress || 0}%` }}
-                  className={styles.progress}
-                />
-              </div>
-              <p
+              <div
                 style={{
-                  width: `${task.progress || 0}%`,
-                  backgroundColor: "green",
+                  width: "100%",
+                  background: "#eee",
+                  borderRadius: "6px",
                 }}
               >
-                {task.progress || 0}%
-              </p>
+                <div
+                  style={{
+                    width: `${task.progress || 0}%`,
+                    background: "#4CAF50",
+                    color: "white",
+                    padding: "1px",
+                    borderRadius: "6px",
+                    textAlign: "left",
+                    transition: "0.3s",
+                  }}
+                >
+                  {task.progress || 0}%
+                </div>
+              </div>
 
               <div className={styles.actions}>
                 <button onClick={() => openEdit(task)} className={styles.edit}>
