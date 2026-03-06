@@ -4,6 +4,8 @@ import styles from "./Users.module.css";
 import { FaEllipsisV } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEllipsisV } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import AdminNav from "../AdminNav/AdminNav";
 
 function Users() {
@@ -85,29 +87,43 @@ function Users() {
     }
   };
 
+  // For spinner icon
+
+  // In your Users component
+  const [loadingUsers, setLoadingUsers] = useState({}); // Track loading per user
+
   const handleVerifyToggle = async (user) => {
+    const userId = user.id;
+    // Optimistic update
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId ? { ...u, isVerified: !u.isVerified } : u,
+      ),
+    );
+    setLoadingUsers((prev) => ({ ...prev, [userId]: true }));
+
     try {
-      setLoading(true);
       const res = await axios.patch(
-        `http://localhost:3000/api/users/verify/${user.id}`, // fixed URL
+        `http://localhost:3000/api/users/verify/${userId}`,
         { isVerified: !user.isVerified },
         {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         },
       );
-
-      toast.success(
-        res.data.message ||
-          (user.isVerified ? "User unverified" : "User verified"),
-      );
-      fetchUsers();
+      toast.success(res.data.message);
     } catch (error) {
+      // Revert the optimistic update
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === userId ? { ...u, isVerified: user.isVerified } : u,
+        ),
+      );
       toast.error(
         error.response?.data?.message || "Failed to update verification",
       );
     } finally {
-      setLoading(false);
+      setLoadingUsers((prev) => ({ ...prev, [userId]: false }));
     }
   };
 
@@ -205,10 +221,16 @@ function Users() {
                           Remove
                         </button>
                         <button
-                          disabled={loading}
+                          disabled={loadingUsers[user.id]}
                           onClick={() => handleVerifyToggle(user)}
                         >
-                          {user.isVerified ? "Unverify" : "Verify"}
+                          {loadingUsers[user.id] ? (
+                            <FaSpinner className="spin" /> // Add CSS for spinning
+                          ) : user.isVerified ? (
+                            "Unverify"
+                          ) : (
+                            "Verify"
+                          )}
                         </button>
                       </div>
                     )}
