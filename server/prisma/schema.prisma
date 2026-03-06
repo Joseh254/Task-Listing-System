@@ -34,8 +34,9 @@ model task {
   description String
   price       Float
   category    String
-
-  status      String   @default("PENDING") 
+completed Boolean? @default(false)
+Progress Int? @default(0)
+  approved      Boolean   @default(false) 
   taken       Boolean  @default(false)
 
   customerId  String
