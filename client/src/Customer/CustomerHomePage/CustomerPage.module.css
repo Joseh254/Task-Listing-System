@@ -40,6 +40,9 @@
   border-radius: 10px;
   padding: 15px;
   background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .readMore {
@@ -55,6 +58,7 @@
   border-top: 1px solid grey;
   padding: 0.5rem;
   margin: 1rem 0;
+  width: fit-content;
 }
 .taken,
 .notTaken {

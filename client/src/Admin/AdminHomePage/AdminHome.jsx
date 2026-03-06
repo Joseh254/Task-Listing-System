@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import AdminNav from "../AdminNav/AdminNav";
 import "./AdminHomePage.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /* ---------- Stat Card ---------- */
 function StatCard({ title, value }) {
@@ -13,149 +16,253 @@ function StatCard({ title, value }) {
 }
 
 /* ---------- Pending Requests ---------- */
-function PendingRequests() {
+function PendingRequests({ tasks, approveTask, loading }) {
+  const pendingTasks = tasks.filter((task) => !task.approved);
+
+  if (loading) return <p>Loading pending requests...</p>;
+
   return (
     <div className="admin-section-card pending-requests">
       <h3>Pending Job Requests</h3>
+
+      {pendingTasks.length === 0 && <p>No pending tasks</p>}
+
       <ul>
-        <li>
-          Website Development - $800
-          <div className="actions">
-            <button className="approve">Approve</button>
-            <button className="reject">Reject</button>
-          </div>
-        </li>
-        <li>
-          Mobile App UI - $1200
-          <div className="actions">
-            <button className="approve">Approve</button>
-            <button className="reject">Reject</button>
-          </div>
-        </li>
+        {pendingTasks &&
+          pendingTasks.map((task) => (
+            <li key={task.id}>
+              {task.title} - ${task.price}
+              <div className="actions">
+                <button
+                  className="approve"
+                  onClick={() => approveTask(task.id)}
+                >
+                  Approve
+                </button>
+
+                <button className="reject">Reject</button>
+              </div>
+            </li>
+          ))}
       </ul>
     </div>
   );
 }
 
 /* ---------- Freelancer Performance ---------- */
-function FreelancerStats() {
+function FreelancerStats({ users }) {
+  const freelancers = users.filter((u) => u.role === "freelancer");
+
   return (
     <div className="admin-section-card freelancer-performance">
       <h3>Freelancer Performance</h3>
+
       <ul>
-        <li>John Doe - 12 tasks completed</li>
-        <li>Jane Smith - 9 tasks completed</li>
-        <li>Michael - 15 tasks completed</li>
+        {freelancers.slice(0, 5).map((freelancer) => (
+          <li key={freelancer.id}>
+            {freelancer.firstName} {freelancer.lastName}
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
 
 /* ---------- Platform Activity ---------- */
-function PlatformOverview() {
+function PlatformOverview({ tasks, users }) {
   return (
-    <div className="admin-section-card  platform-overview">
+    <div className="admin-section-card platform-overview">
       <h3>Platform Overview</h3>
+
       <ul>
-        <li>New user registered</li>
-        <li>3 jobs approved today</li>
-        <li>2 payments processed</li>
+        <li>{users.length} total users</li>
+        <li>{tasks.filter((t) => t.approved).length} jobs approved</li>
+        <li>{tasks.filter((t) => t.completed).length} tasks completed</li>
       </ul>
     </div>
   );
 }
-function ActiveTasks() {
+
+/* ---------- Active Tasks ---------- */
+function ActiveTasks({ tasks }) {
+  const activeTasks = tasks.filter((t) => t.taken && !t.completed);
+
   return (
     <div className="admin-section-card active-tasks">
       <h3>Active Tasks Monitoring</h3>
+
       <ul>
-        <li>
-          <div>
-            <strong>Landing Page Design</strong>
-            <p>John Doe</p>
-          </div>
-          <span className="status in-progress">In Progress</span>
-        </li>
+        {activeTasks.slice(0, 5).map((task) => (
+          <li key={task.id}>
+            <div>
+              <strong>{task.title}</strong>
+              <p>{task.category}</p>
+            </div>
 
-        <li>
-          <div>
-            <strong>E-commerce Backend</strong>
-            <p> Jane Smith</p>
-          </div>
-          <span className="status review">Under Review</span>
-        </li>
-
-        <li>
-          <div>
-            <strong>Logo Design</strong>
-            <p> Michael</p>
-          </div>
-          <span className="status completed">Completed</span>
-        </li>
+            <span className="status in-progress">
+              {task.Progress || 0}% Progress
+            </span>
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
 
-function TaskProgressOverview() {
+/* ---------- Task Progress ---------- */
+function TaskProgressOverview({ tasks }) {
+  const progressTasks = tasks.filter((t) => t.taken);
+
   return (
     <div className="admin-section-card task-progress">
       <h3>Task Progress Overview</h3>
 
-      <div className="progress-item">
-        <p>Website Redesign</p>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: "70%" }}></div>
-        </div>
-      </div>
+      {progressTasks.slice(0, 5).map((task) => (
+        <div className="progress-item" key={task.id}>
+          <p>{task.title}</p>
 
-      <div className="progress-item">
-        <p>Mobile App UI</p>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: "45%" }}></div>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${task.Progress || 0}%` }}
+            ></div>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
 
-function TopFreelancers() {
+/* ---------- Top Freelancers ---------- */
+function TopFreelancers({ users }) {
+  const freelancers = users.filter((u) => u.role === "freelancer");
+
   return (
     <div className="admin-section-card top-freelancers">
       <h3>Top Performing Freelancers</h3>
+
       <ul>
-        <li>John Doe ⭐ 4.9 (15 tasks)</li>
-        <li>Michael ⭐ 4.8 (12 tasks)</li>
-        <li>Jane Smith ⭐ 4.7 (10 tasks)</li>
+        {freelancers.slice(0, 5).map((freelancer) => (
+          <li key={freelancer.id}>
+            {freelancer.firstName} {freelancer.lastName}
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
+
 /* ---------- Main Admin Page ---------- */
 function AdminHomePage() {
+  const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  /* ---------- Fetch Data ---------- */
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      const tasksRes = await axios.get(
+        "http://localhost:3000/api/tasks/all-tasks",
+        { withCredentials: true },
+      );
+      console.log(tasksRes, "taskresponse");
+
+      const usersRes = await axios.get("http://localhost:3000/api/users", {
+        withCredentials: true,
+      });
+
+      setTasks(tasksRes.data.data);
+      setUsers(usersRes.data.data);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to load dashboard data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ---------- Approve Task ---------- */
+  const approveTask = async (id) => {
+    try {
+      await axios.patch(
+        `http://localhost:3000/api/tasks/verify/${id}`,
+        { approved: true },
+        { withCredentials: true },
+      );
+
+      toast.success("Task approved successfully");
+
+      fetchData();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to approve task");
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <AdminNav />
+        <div className="admin-dashboard-container">
+          <h2>Loading Dashboard...</h2>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <AdminNav />
 
+      <ToastContainer position="top-right" autoClose={3000} />
+
       <div className="admin-dashboard-container">
         <h2 className="admin-title">Admin Dashboard</h2>
 
-        {/* Stats Overview */}
+        {/* Stats */}
         <div className="admin-stats-grid">
-          <StatCard title="Total Clients" value="124" />
-          <StatCard title="Active Freelancers" value="45" />
-          <StatCard title="Pending Requests" value="6" />
-          <StatCard title="Total Published Jobs" value="38" />
+          <StatCard
+            title="Total Clients"
+            value={users && users.filter((u) => u.role === "customer").length}
+          />
+
+          <StatCard
+            title="Active Freelancers"
+            value={users && users.filter((u) => u.role === "freelancer").length}
+          />
+
+          <StatCard
+            title="Pending Requests"
+            value={tasks && tasks.filter((t) => !t.approved).length}
+          />
+
+          <StatCard title="Total Published Jobs" value={tasks.length} />
         </div>
 
-        {/* Main Content */}
+        {/* Content */}
         <div className="admin-content-grid">
-          <PendingRequests />
-          <FreelancerStats />
-          <ActiveTasks />
-          <TaskProgressOverview />
-          <TopFreelancers />
-          <PlatformOverview />
+          <PendingRequests
+            tasks={tasks}
+            approveTask={approveTask}
+            loading={loading}
+          />
+
+          <FreelancerStats users={users} />
+
+          <ActiveTasks tasks={tasks} />
+
+          <TaskProgressOverview tasks={tasks} />
+
+          <TopFreelancers users={users} />
+
+          <PlatformOverview tasks={tasks} users={users} />
         </div>
       </div>
     </>

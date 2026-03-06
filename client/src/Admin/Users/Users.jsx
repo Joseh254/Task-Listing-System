@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./Users.module.css";
 import { FaEllipsisV } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AdminNav from "../AdminNav/AdminNav";
+
 function Users() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
   const [roleFilter, setRoleFilter] = useState("all");
@@ -23,18 +24,14 @@ function Users() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-
       const res = await axios.get("http://localhost:3000/api/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
 
       if (res.data.success) {
         setUsers(res.data.data);
         setFilteredUsers(res.data.data);
-        toast.success(res.data.message || "Users fetched successfully");
       } else {
         toast.error(res.data.message || "Failed to fetch users");
       }
@@ -62,7 +59,9 @@ function Users() {
 
     if (verifyFilter !== "all") {
       filtered = filtered.filter(
-        (user) => user.isVerified === (verifyFilter === "verified"),
+        (user) =>
+          (verifyFilter === "verified" && user.isVerified) ||
+          (verifyFilter === "not" && !user.isVerified),
       );
     }
 
@@ -73,13 +72,11 @@ function Users() {
   const handleDelete = async (id) => {
     try {
       setLoading(true);
-
       const res = await axios.delete(`http://localhost:3000/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
-
       toast.success(res.data.message || "User removed");
-
       fetchUsers();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to delete user");
@@ -91,18 +88,19 @@ function Users() {
   const handleVerifyToggle = async (user) => {
     try {
       setLoading(true);
-
       const res = await axios.patch(
-        `http://localhost:3000/api/users/verify/${user.id}`,
+        `http://localhost:3000/api/users/verify/${user.id}`, // fixed URL
         { isVerified: !user.isVerified },
-        { headers: { Authorization: `Bearer ${token}` } },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        },
       );
 
       toast.success(
         res.data.message ||
           (user.isVerified ? "User unverified" : "User verified"),
       );
-
       fetchUsers();
     } catch (error) {
       toast.error(
@@ -116,14 +114,13 @@ function Users() {
   // Pagination
   const indexOfLastUser = page * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
     <div className={styles.container}>
       <AdminNav />
+      <ToastContainer position="top-right" autoClose={3000} />
       <h2>All Users</h2>
 
       {/* Filters */}
@@ -177,13 +174,9 @@ function Users() {
                   <td>
                     {user.firstName} {user.lastName}
                   </td>
-
                   <td>{user.email}</td>
-
                   <td className={styles.role}>{user.role}</td>
-
-                  <td>{user.category}</td>
-
+                  <td>{user.category || "-"}</td>
                   <td>
                     {user.isVerified ? (
                       <span className={styles.verified}>Verified</span>
@@ -191,14 +184,12 @@ function Users() {
                       <span className={styles.notVerified}>Not Verified</span>
                     )}
                   </td>
-
                   <td className={styles.menuCell}>
                     <FaEllipsisV
                       onClick={() =>
                         setActiveMenu(activeMenu === user.id ? null : user.id)
                       }
                     />
-
                     {activeMenu === user.id && (
                       <div className={styles.menu}>
                         <button
@@ -207,14 +198,12 @@ function Users() {
                         >
                           Edit
                         </button>
-
                         <button
                           disabled={loading}
                           onClick={() => handleDelete(user.id)}
                         >
                           Remove
                         </button>
-
                         <button
                           disabled={loading}
                           onClick={() => handleVerifyToggle(user)}
@@ -239,11 +228,9 @@ function Users() {
         >
           Previous
         </button>
-
         <span>
           Page {page} of {totalPages || 1}
         </span>
-
         <button
           disabled={page === totalPages || loading}
           onClick={() => setPage(page + 1)}

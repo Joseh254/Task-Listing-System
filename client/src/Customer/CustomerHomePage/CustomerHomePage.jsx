@@ -57,7 +57,7 @@ function CustomerHomePage() {
             ),
           );
 
-          await axios.patch(`${API}/update/${editingTask.id}`, values, {
+          await axios.patch(`${API}/edit/${editingTask.id}`, values, {
             withCredentials: true,
           });
 

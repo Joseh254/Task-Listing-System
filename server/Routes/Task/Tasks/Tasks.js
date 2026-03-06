@@ -231,10 +231,48 @@ async function getMyTasks(req, res) {
   }
 }
 
-// ----------------------------
-// ROUTE
-// ----------------------------
+async function allTask(req, res) {
+  try {
+    const tasks = await prisma.task.findMany();
+    if (tasks.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No tasks at this momment" });
+    }
+    return res.status(200).json({ success: true, data: tasks });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+async function editTask(req, res) {
+  try {
+    const { title, description, price, category } = req.body;
 
+    const task = await prisma.task.findUnique({
+      where: { id: req.params.id },
+    });
+
+    if (!task) return res.status(404).json({ message: "Task not found" });
+
+    if (task.customerId !== req.user.id) {
+      return res.status(403).json({ message: "Not allowed to edit this task" });
+    }
+
+    const updatedTask = await prisma.task.update({
+      where: { id: req.params.id },
+      data: {
+        ...(title && { title }),
+        ...(description && { description }),
+        ...(price && { price }),
+        ...(category && { category }),
+      },
+    });
+
+    res.json(updatedTask);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 // ----------------------------
 // ROUTES
 // ----------------------------
@@ -243,6 +281,12 @@ router.post(
   verifyToken,
   allowRoles("customer", "client"),
   createTask,
+);
+router.patch(
+  "/edit/:id",
+  verifyToken,
+  allowRoles("customer", "client"),
+  editTask,
 );
 router.patch("/verify/:id", verifyToken, allowRoles("admin"), updateTask);
 router.delete(
@@ -285,4 +329,5 @@ router.get(
   allowRoles("customer", "client"),
   getMyTasks,
 );
+router.get("/all-tasks", verifyToken, allowRoles("admin"), allTask);
 export default router;
