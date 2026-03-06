@@ -22,6 +22,28 @@ model user {
   role String
   category String  
  isVerified    Boolean  @default(false)
+
+   customerTasks  task[] @relation("CustomerTasks")
+  freelancerTasks task[] @relation("FreelancerTasks")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+model task {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  price       Float
+  category    String
+
+  status      String   @default("PENDING") 
+  taken       Boolean  @default(false)
+
+  customerId  String
+  freelancerId String?
+
+  customer    user @relation("CustomerTasks", fields: [customerId], references: [id])
+  freelancer  user? @relation("FreelancerTasks", fields: [freelancerId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

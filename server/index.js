@@ -7,6 +7,9 @@ import register from "./Routes/Register/Register.js";
 import login from "./Routes/Login/Login.js";
 import users from './Routes/Users/AllUsers/AllUsers.js'
 import updateuser from './Routes/Users/UpdateUser/UpdateUser.js'
+
+import tasks from "./Routes/Task/Tasks/Tasks.js";
+
 dotenv.config();
 
 const app = express();
@@ -27,6 +30,8 @@ app.use("/api/register", register);
 app.use("/api/login", login);
 app.use("/api/users", users);
 app.use("/api/users/update", updateuser);
+
+app.use("/api/tasks", tasks);
 app.listen(3000, () => {
   console.log(`Server running on port 3000`);
 });
