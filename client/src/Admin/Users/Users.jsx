@@ -71,30 +71,28 @@ function Users() {
     setPage(1);
   };
 
-const handleDelete = async (id) => {
-  // Optimistically remove the user from UI
-  const originalUsers = [...users];
-  const originalFiltered = [...filteredUsers];
-  setUsers(users.filter((user) => user.id !== id));
-  setFilteredUsers(filteredUsers.filter((user) => user.id !== id));
+  const handleDelete = async (id) => {
+    // Optimistically remove the user from UI
+    const originalUsers = [...users];
+    const originalFiltered = [...filteredUsers];
+    setUsers(users.filter((user) => user.id !== id));
+    setFilteredUsers(filteredUsers.filter((user) => user.id !== id));
 
-  try {
-    const res = await axios.delete(`http://localhost:3000/api/users/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      withCredentials: true,
-    });
+    try {
+      const res = await axios.delete(`http://localhost:3000/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
 
-    toast.success(res.data.message || "User removed successfully");
-  } catch (error) {
-    // If API fails, revert back to original users
-    setUsers(originalUsers);
-    setFilteredUsers(originalFiltered);
+      toast.success(res.data.message || "User removed successfully");
+    } catch (error) {
+      // If API fails, revert back to original users
+      setUsers(originalUsers);
+      setFilteredUsers(originalFiltered);
 
-    toast.error(
-      error.response?.data?.message || "Failed to delete user"
-    );
-  }
-};
+      toast.error(error.response?.data?.message || "Failed to delete user");
+    }
+  };
 
   // For spinner icon
 

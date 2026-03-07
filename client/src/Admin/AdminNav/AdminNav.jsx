@@ -8,8 +8,6 @@ function AdminNav() {
   const adminLinks = [
     { label: "Dashboard", path: "/admin", icon: FaHome },
     { label: "Users", path: "/admin/users", icon: FaUsers },
-   
-  
   ];
   function handleLogout() {
     localStorage.removeItem("user"); // better than clear()

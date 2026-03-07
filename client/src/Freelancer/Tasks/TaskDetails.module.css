@@ -1,0 +1,85 @@
+.container {
+  min-height: 100vh;
+  background: #f3f4f6;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  background: white;
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  color: #111827;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #6b7280;
+}
+
+.price {
+  background: var(--color-light);
+  color: var(--color-dark);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.section {
+  margin-bottom: 25px;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+  color: #374151;
+}
+
+.description {
+  background: #f9fafb;
+  padding: 15px;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.takeBtn {
+  background: var(--color-primary);
+  color: var(--color-dark);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.takeBtn:hover {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.backBtn {
+  background: #e5e7eb;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}

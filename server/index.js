@@ -8,7 +8,7 @@ import login from "./Routes/Login/Login.js";
 import users from "./Routes/Users/AllUsers/AllUsers.js";
 import updateuser from "./Routes/Users/UpdateUser/UpdateUser.js";
 import verifyUser from "./Routes/Users/VerifyUser/VerifyUser.js";
-import deleteUser from './Routes/Users/DeleteUser/DeleteUser.js'
+import deleteUser from "./Routes/Users/DeleteUser/DeleteUser.js";
 import tasks from "./Routes/Task/Tasks/Tasks.js";
 
 dotenv.config();

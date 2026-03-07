@@ -12,7 +12,8 @@ import Users from "./Admin/Users/Users";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Unauthorized from "./Unauthorized/Unauthorized";
 import NotFound from "./NotFound/NotFound";
-
+import TaskDetails from "./Freelancer/Tasks/TasksDetails";
+import TaskWork from "./Freelancer/Tasks/TaskWork/TaskWork";
 function App() {
   return (
     <BrowserRouter>
@@ -32,6 +33,8 @@ function App() {
         {/* 🔐 Freelancer Only */}
         <Route element={<ProtectedRoute allowedRoles={["freelancer"]} />}>
           <Route path="/freeLancer" element={<FreeLancerHomePage />} />
+          <Route path="/task-work/:id" element={<TaskWork />} />
+          <Route path="/task/:id" element={<TaskDetails />} />
         </Route>
 
         {/* 🔐 Customer Only */}

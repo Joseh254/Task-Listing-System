@@ -1,4 +1,8 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import FreelancerNav from "../FreelancerNav/FreelancerNav";
+import { useNavigate } from "react-router-dom";
 import "./FreelancerHome.css";
 
 /* ---------- Dashboard Cards ---------- */
@@ -12,19 +16,39 @@ function StatsCard({ title, value }) {
 }
 
 /* ---------- Active Projects ---------- */
-function ActiveProjects() {
+
+function ActiveProjects({ tasks }) {
+  const navigate = useNavigate();
+
+  if (!tasks || tasks.length === 0) {
+    return (
+      <div className="section-card">
+        <h3>Available Tasks</h3>
+        <p>No tasks available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="section-card">
-      <h3>Active Projects</h3>
+      <h3>Available Tasks</h3>
+
       <ul>
-        <li>Website Redesign - Due in 5 days</li>
-        <li>Mobile App UI - In Review</li>
-        <li>Landing Page - Completed</li>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <strong>{task.title}</strong> - ${task.price}
+            <button
+              className="take-btn"
+              onClick={() => navigate(`/task/${task.id}`, { state: task })}
+            >
+              View Task
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
-
 /* ---------- Recent Activity ---------- */
 function RecentActivity() {
   return (
@@ -32,15 +56,112 @@ function RecentActivity() {
       <h3>Recent Activity</h3>
       <ul>
         <li>You received a new message</li>
-        <li>Payment of $500 released</li>
-        <li>Client left a 5★ review</li>
+        <li>Payment released</li>
+        <li>Client left a review</li>
       </ul>
     </div>
   );
 }
 
+// ACTIVE TASKD
+function MyActiveTasks({ tasks }) {
+  const navigate = useNavigate();
+
+  if (!tasks || tasks.length === 0) {
+    return (
+      <div className="section-card">
+        <h3>My Active Tasks</h3>
+        <p>You have no active tasks</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="section-card">
+      <h3>My Active Tasks</h3>
+
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <strong>{task.title}</strong>
+
+            <button
+              className="take-btn"
+              onClick={() => navigate(`/task-work/${task.id}`, { state: task })}
+            >
+              Continue Task
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 /* ---------- Main Page ---------- */
 function FreeLancerHomePage() {
+  const [tasks, setTasks] = useState([]);
+  const [activeTasks, setActiveTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchTasks = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        "http://localhost:3000/api/tasks/available",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        },
+      );
+      console.log(response);
+
+      if (response?.data) {
+        setTasks(response.data);
+      } else {
+        setTasks([]);
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error.response) {
+        toast.error(error.response.data?.message || "Failed to fetch tasks");
+      } else if (error.request) {
+        toast.error("Server not responding");
+      } else {
+        toast.error("Something went wrong");
+      }
+
+      setTasks([]); // prevent crash
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchActiveTasks = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get("http://localhost:3000/api/tasks/my-active", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      console.log("====================================");
+      console.log(res);
+      console.log("====================================");
+      setActiveTasks(res.data);
+    } catch {
+      setActiveTasks([]);
+    }
+  };
+  useEffect(() => {
+    fetchTasks();
+    fetchActiveTasks();
+  }, []);
+
   return (
     <>
       <FreelancerNav />
@@ -50,17 +171,25 @@ function FreeLancerHomePage() {
 
         {/* Stats Section */}
         <div className="stats-grid">
-          <StatsCard title="Total Earnings" value="$2,450" />
-          <StatsCard title="Active Tasks" value="3" />
-          <StatsCard title="New Messages" value="2" />
+          <StatsCard title="Available Tasks" value={tasks?.length || 0} />
+          <StatsCard title="Active Tasks" value={activeTasks?.length || 0} />
+          <StatsCard title="Messages" value="0" />
           <StatsCard title="Rating" value="4.8 ★" />
         </div>
 
+        {/* Loading */}
+        {loading && <p>Loading dashboard...</p>}
+
         {/* Lower Sections */}
-        <div className="content-grid">
-          <ActiveProjects />
-          <RecentActivity />
-        </div>
+        {!loading && (
+          <div className="content-grid">
+            <>
+              <ActiveProjects tasks={tasks} />
+              <MyActiveTasks tasks={activeTasks} />
+            </>
+            <RecentActivity />
+          </div>
+        )}
       </div>
     </>
   );

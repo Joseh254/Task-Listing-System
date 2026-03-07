@@ -273,9 +273,60 @@ async function editTask(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+async function getFreelancerTasks(req, res) {
+  try {
+    const tasks = await prisma.task.findMany({
+      where: {
+        freelancerId: req.user.id,
+        completed: false,
+      },
+    });
+
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+async function getSingleTask(req, res) {
+  try {
+    const task = await prisma.task.findUnique({
+      where: { id: req.params.id },
+      include: {
+        customer: {
+          select: {
+            firstName: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    res.json(task);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 // ----------------------------
 // ROUTES
 // ----------------------------
+router.get(
+  "/:id",
+  verifyToken,
+  allowRoles("freelancer", "customer", "client", "admin"),
+  getSingleTask,
+);
+router.get(
+  "/my-active",
+  verifyToken,
+  requireVerified,
+  allowRoles("freelancer"),
+  getFreelancerTasks,
+);
+
 router.post(
   "/create",
   verifyToken,
