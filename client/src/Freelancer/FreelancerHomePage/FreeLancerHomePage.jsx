@@ -62,7 +62,81 @@ function RecentActivity() {
     </div>
   );
 }
+//submited tasks
+function SubmittedTasks({ tasks }) {
+  if (!tasks || tasks.length === 0) {
+    return (
+      <div className="section-card">
+        <h3>Submitted Tasks</h3>
+        <p>No submitted tasks</p>
+      </div>
+    );
+  }
 
+  return (
+    <div className="section-card">
+      <h3>Submitted Tasks</h3>
+
+      <ul>
+        {tasks.map((task) => {
+          const submission = task.submissions?.[0];
+          const submittedAt = submission?.createdAt
+            ? new Date(submission.createdAt).toLocaleString()
+            : null;
+          return (
+            <li key={task.id} className="task-item">
+              <div>
+                <strong>{task.title}</strong>
+
+                <div className="progress-container">
+                  <div
+                    className="progress-bar"
+                    style={{ width: `${task.Progress}%` }}
+                  />
+                  <span>{task.Progress}%</span>
+                </div>
+
+                {/* Client */}
+                <p>
+                  Client: <b>{task.customer?.firstName}</b>
+                </p>
+
+                {/* Message */}
+                {submission?.message && (
+                  <p>
+                    Comment: <i>{submission.message}</i>
+                  </p>
+                )}
+                {submittedAt && (
+                  <p>
+                    Submitted on: <b>{submittedAt}</b>
+                  </p>
+                )}
+                {/* Files */}
+                {submission?.files?.length > 0 && (
+                  <div>
+                    <p>Files:</p>
+                    <ul>
+                      {submission.files.map((file) => (
+                        <li key={file.id}>
+                          <a href={file.url} target="_blank">
+                            View File
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              <span className="submitted-badge">Submitted</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
 // ACTIVE TASKD
 function MyActiveTasks({ tasks }) {
   const navigate = useNavigate();
@@ -82,8 +156,19 @@ function MyActiveTasks({ tasks }) {
 
       <ul>
         {tasks.map((task) => (
-          <li key={task.id}>
-            <strong>{task.title}</strong>
+          <li key={task.id} className="task-item">
+            <div className="task-info">
+              <strong>{task.title}</strong>
+
+              {/* Progress Bar */}
+              <div className="progress-container">
+                <div
+                  className="progress-bar"
+                  style={{ width: `${task.Progress || 0}%` }}
+                />
+                <span>{task.Progress || 0}%</span>
+              </div>
+            </div>
 
             <button
               className="take-btn"
@@ -97,12 +182,13 @@ function MyActiveTasks({ tasks }) {
     </div>
   );
 }
+
 /* ---------- Main Page ---------- */
 function FreeLancerHomePage() {
   const [tasks, setTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [submittedTasks, setSubmittedTasks] = useState([]);
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -116,7 +202,7 @@ function FreeLancerHomePage() {
           withCredentials: true,
         },
       );
-      console.log(response);
+      // console.log(response);
 
       if (response?.data) {
         setTasks(response.data);
@@ -139,6 +225,30 @@ function FreeLancerHomePage() {
       setLoading(false);
     }
   };
+  //SUBMITED TASK
+  const fetchSubmittedTasks = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        "http://localhost:3000/api/task/freelancer/submitted",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        },
+      );
+      console.log("====================================");
+      console.log(res, "submited task");
+      console.log("====================================");
+
+      setSubmittedTasks(res.data);
+    } catch (error) {
+      console.error(error);
+      setSubmittedTasks([]);
+    }
+  };
   const fetchActiveTasks = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -152,9 +262,9 @@ function FreeLancerHomePage() {
           withCredentials: true,
         },
       );
-      console.log("====================================");
-      console.log(res);
-      console.log("====================================");
+      // console.log("====================================");
+      // console.log(res);
+      // console.log("====================================");
       setActiveTasks(res.data);
     } catch {
       setActiveTasks([]);
@@ -163,6 +273,7 @@ function FreeLancerHomePage() {
   useEffect(() => {
     fetchTasks();
     fetchActiveTasks();
+    fetchSubmittedTasks();
   }, []);
 
   return (
@@ -176,6 +287,10 @@ function FreeLancerHomePage() {
         <div className="stats-grid">
           <StatsCard title="Available Tasks" value={tasks?.length || 0} />
           <StatsCard title="Active Tasks" value={activeTasks?.length || 0} />
+          <StatsCard
+            title="Submitted Tasks"
+            value={submittedTasks?.length || 0}
+          />
           <StatsCard title="Messages" value="0" />
           <StatsCard title="Rating" value="4.8 ★" />
         </div>
@@ -191,6 +306,7 @@ function FreeLancerHomePage() {
               <MyActiveTasks tasks={activeTasks} />
             </>
             <RecentActivity />
+            <SubmittedTasks tasks={submittedTasks} />
           </div>
         )}
       </div>

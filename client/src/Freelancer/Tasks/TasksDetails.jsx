@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import styles from "./TaskDetails.module.css";
-
+import FreelancerNav from "../FreelancerNav/FreelancerNav";
 function TaskDetails() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ function TaskDetails() {
 
   return (
     <div className={styles.container}>
+      <FreelancerNav />
       <div className={styles.card}>
         <h2 className={styles.title}>{task.title}</h2>
 

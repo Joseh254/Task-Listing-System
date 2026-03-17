@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -6,8 +6,10 @@ import styles from "./TaskWork.module.css";
 import { FiUpload, FiLink } from "react-icons/fi";
 import { FaFileAlt } from "react-icons/fa";
 import { AiOutlineComment } from "react-icons/ai";
-
+import FreelancerNav from "../../FreelancerNav/FreelancerNav";
 function TaskWork() {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -29,6 +31,7 @@ function TaskWork() {
 
   const fetchTask = async () => {
     try {
+      // setLoading(true)
       const token = localStorage.getItem("token");
 
       const res = await axios.get(`http://localhost:3000/api/tasks/${id}`, {
@@ -60,57 +63,60 @@ function TaskWork() {
     setLinks(newLinks);
   };
 
- const submitWork = async () => {
-  try {
-    const token = localStorage.getItem("token");
+  const submitWork = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
 
-    const validLinks = links.filter((l) => l.trim() !== "");
+      const validLinks = links.filter((l) => l.trim() !== "");
 
-    if (files.length === 0 && validLinks.length === 0) {
-      return toast.error("Upload at least one file or link");
-    }
-
-    let uploadedFileUrls = [];
-
-    if (files.length > 0) {
-      toast.info("Uploading files...");
-
-      uploadedFileUrls = await Promise.all(
-        files.map((file) => uploadToCloudinary(file))
-      );
-    }
-
-    // combine cloudinary files + links
-    const allFiles = [...uploadedFileUrls, ...validLinks];
-
-    await axios.post(
-      `http://localhost:3000/api/submit/${id}`,
-      {
-        message: comment,
-        files: allFiles
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true
+      if (files.length === 0 && validLinks.length === 0) {
+        return toast.error("Upload at least one file or link");
       }
-    );
 
-    toast.success("Work submitted successfully");
+      let uploadedFileUrls = [];
 
-    setFiles([]);
-    setLinks([""]);
-    setComment("");
+      if (files.length > 0) {
+        toast.info("Uploading files...");
 
-  } catch (error) {
-    toast.error(error.response?.data?.message || "Submission failed");
-  }
-};
+        uploadedFileUrls = await Promise.all(
+          files.map((file) => uploadToCloudinary(file)),
+        );
+      }
+
+      // combine cloudinary files + links
+      const allFiles = [...uploadedFileUrls, ...validLinks];
+
+      await axios.post(
+        `http://localhost:3000/api/task/submit/${id}`,
+        {
+          message: comment,
+          files: allFiles,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        },
+      );
+
+      toast.success("Work submitted successfully");
+      navigate("/");
+      setFiles([]);
+      setLinks([""]);
+      setComment("");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Submission failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!task) return <p>Loading task...</p>;
 
   return (
     <div className={styles.container}>
       <div className={styles.card}>
+        <FreelancerNav />
         <h2 className={styles.title}>{task.title}</h2>
 
         <div className={styles.meta}>
@@ -192,8 +198,12 @@ function TaskWork() {
             />
           </div>
 
-          <button onClick={submitWork} className={styles.submitBtn}>
-            Submit Work
+          <button
+            onClick={submitWork}
+            disabled={loading}
+            className={styles.submitBtn}
+          >
+            {loading ? "submiting task" : "Submit Task"}
           </button>
         </div>
       </div>

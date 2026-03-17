@@ -127,7 +127,7 @@ async function takeTask(req, res) {
     // Atomic update to prevent race conditions
     const updated = await prisma.task.updateMany({
       where: { id: req.params.id, taken: false },
-      data: { taken: true,Progress:30, freelancerId: req.user.id },
+      data: { taken: true, Progress: 30, freelancerId: req.user.id },
     });
 
     if (updated.count === 0)

@@ -6,7 +6,7 @@ import {
   allowRoles,
 } from "../../Auth/VerifyUserRole.js";
 const prisma = new PrismaClient();
-const router = Router()
+const router = Router();
 async function submitTask(req, res) {
   try {
     const { message, files } = req.body;
@@ -16,8 +16,7 @@ async function submitTask(req, res) {
       include: { submissions: true },
     });
 
-    if (!task)
-      return res.status(404).json({ message: "Task not found" });
+    if (!task) return res.status(404).json({ message: "Task not found" });
 
     if (task.freelancerId !== req.user.id)
       return res.status(403).json({
@@ -139,14 +138,14 @@ router.get(
   verifyToken,
   requireVerified,
   allowRoles("freelancer"),
-  getFreelancerSubmittedTasks
+  getFreelancerSubmittedTasks,
 );
 
 router.get(
   "/customer/completed",
   verifyToken,
   allowRoles("customer", "client"),
-  getCustomerCompletedTasks
+  getCustomerCompletedTasks,
 );
 
 router.post(
@@ -154,6 +153,6 @@ router.post(
   verifyToken,
   requireVerified,
   allowRoles("freelancer"),
-  submitTask
+  submitTask,
 );
 export default router;

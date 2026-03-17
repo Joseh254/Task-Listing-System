@@ -10,7 +10,7 @@ import updateuser from "./Routes/Users/UpdateUser/UpdateUser.js";
 import verifyUser from "./Routes/Users/VerifyUser/VerifyUser.js";
 import deleteUser from "./Routes/Users/DeleteUser/DeleteUser.js";
 import tasks from "./Routes/Task/Tasks/Tasks.js";
-import submissions from './Routes/submissions/submissions.js'
+import submissions from "./Routes/submissions/submissions.js";
 dotenv.config();
 
 const app = express();
