@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model user {
+  id         String  @id @default(uuid())
+  firstName  String?
+  lastName   String?
+  email      String  @unique
+  phone      String? @unique
+  password   String?
+  role       String
+  category   String
+  isVerified Boolean @default(false)
+
+  customerTasks   task[]       @relation("CustomerTasks")
+  freelancerTasks task[]       @relation("FreelancerTasks")
+  submissions     submission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model task {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  price       Float
+  category    String
+  completed   Boolean? @default(false)
+  Progress    Int?     @default(0)
+  approved    Boolean  @default(false)
+  taken       Boolean  @default(false)
+
+  customerId   String
+  freelancerId String?
+
+  customer   user  @relation("CustomerTasks", fields: [customerId], references: [id])
+  freelancer user? @relation("FreelancerTasks", fields: [freelancerId], references: [id])
+
+  submissions submission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model submission {
+  id           String  @id @default(uuid())
+  message      String?
+  taskId       String
+  freelancerId String
+
+  task       task @relation(fields: [taskId], references: [id])
+  freelancer user @relation(fields: [freelancerId], references: [id])
+
+  files submissionFile[]
+
+  createdAt DateTime @default(now())
+}
+
+model submissionFile {
+  id           String @id @default(uuid())
+  url          String
+  submissionId String
+
+  submission submission @relation(fields: [submissionId], references: [id])
+
+  createdAt DateTime @default(now())
+}

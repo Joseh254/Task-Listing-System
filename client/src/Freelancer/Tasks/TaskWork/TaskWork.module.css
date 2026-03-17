@@ -1,0 +1,146 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 30px 15px;
+  background: #f3f4f6;
+  min-height: 100vh;
+}
+
+.card {
+  width: 100%;
+  max-width: 750px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  color: #555;
+}
+
+.meta span {
+  font-weight: 600;
+}
+
+.description {
+  margin: 15px 0;
+  line-height: 1.5;
+  color: #444;
+}
+
+.uploadArea {
+  margin-top: 25px;
+  border: 2px dashed #d1d5db;
+  padding: 20px;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.fileBox {
+  display: block;
+  border: 1px dashed #9ca3af;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+}
+
+.fileBox input {
+  display: none;
+}
+
+.fileList {
+  margin-top: 10px;
+}
+
+.fileList p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.linkSection {
+  margin-top: 20px;
+}
+
+.input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.addBtn {
+  margin-top: 10px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.addBtn:hover {
+  background: #4f46e5;
+}
+
+.commentSection {
+  margin-top: 20px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.submitBtn {
+  width: 100%;
+  margin-top: 25px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submitBtn:hover {
+  background: #15803d;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .meta {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}
